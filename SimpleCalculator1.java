@@ -1,17 +1,17 @@
 import java.awt.event.*;
 import javax.swing.*; // brings swing tools into our program
 
-class SimpleCalculator1 implements ActionListener{//tell java how to handle button clicks
+class SimpleCalculator1 implements ActionListener{   //tell java how to handle button clicks
     
       JFrame f;
       JTextField Display;
       JButton b0,b1,b2,b3,b4,b5,b6,b7,b8,b9;
-      JButton bAdd,bSub,bMul,bDiv,bEqual,bClear;
+      JButton bAdd,bSub,bMul,bDiv,bDot,bEqual,bClear;
       
-      int num1=0,num2=0;
+      double res=0;
       String operator="";
 
-      SimpleCalculator1(){
+      SimpleCalculator1() {
 
        f=new JFrame("my frist swing window"); //for creating windows
        f.setSize(400,400);
@@ -78,13 +78,23 @@ class SimpleCalculator1 implements ActionListener{//tell java how to handle butt
        bDiv=new JButton("/");
        bDiv.setBounds(100,280,50,40);
        f.add(bDiv);
+
+       bDot=new JButton(".");
+       bDot.setBounds(160,280,50,40);
+       f.add(bDot);
+
        bEqual=new JButton("=");
-       bEqual.setBounds(160,280,50,40);
+       bEqual.setBounds(40,330,50,40);
        f.add(bEqual);
 
        bClear=new JButton("C");
-       bClear.setBounds(40,330,170,40);
+       bClear.setBounds(100,330,110,40);
        f.add(bClear);
+
+      //  bDot=new JButton(".");
+      //  bDot.setBounds(,,,,);
+
+
 
        b0.addActionListener(this); //listen to click
        b1.addActionListener(this);
@@ -100,12 +110,30 @@ class SimpleCalculator1 implements ActionListener{//tell java how to handle butt
        bSub.addActionListener(this);
        bMul.addActionListener(this);
        bDiv.addActionListener(this);
+       bDot.addActionListener(this);
        bEqual.addActionListener(this);
        bClear.addActionListener(this);
 
        f.setVisible(true);
       }
+      void Calculate(double n){
+         if(operator.equals("+")){
+          res=res+n;
+         }
+         else if(operator.equals("-")){
+          res=res-n;
+      }
+       else if(operator.equals("*")){
+          res=res*n;
+      }
+       else if(operator.equals("/")){
+          res=res/n;
+      }
+      else{
+        res=n;
+      }
 
+    }
       public void actionPerformed(ActionEvent e){ //automatically called when button clicked //
        
         if(e.getSource()==b0){
@@ -140,64 +168,56 @@ class SimpleCalculator1 implements ActionListener{//tell java how to handle butt
        }
 
        if(e.getSource()==bAdd){
-        num1=Integer.parseInt(Display.getText()); //parseInt is used to convert string to integer
+       Calculate(Double.parseDouble(Display.getText())); //parseInt is used to convert string to integer
         operator="+";
         Display.setText("");
        }
        
        if(e.getSource()==bSub){
-        num1=Integer.parseInt(Display.getText());
+      Calculate( Double.parseDouble(Display.getText()));
         operator="-";
         Display.setText("");
        }
 
        if(e.getSource()==bMul){
-        num1=Integer.parseInt(Display.getText());
+       Calculate(Double.parseDouble(Display.getText()));
         operator="*";
         Display.setText("");
        }
       
        if(e.getSource()==bDiv){
-        num1=Integer.parseInt(Display.getText());
+        Calculate(Double.parseDouble(Display.getText()));
         operator="/";
         Display.setText("");
        }
 
+       if (e.getSource() == bDot) {
+         if (!Display.getText().contains(".")) //true--> If the display does NOT already contain a decimal point”
+           {
+           Display.setText(Display.getText() + ".");
+           }
+       }
+
        if(e.getSource()==bEqual)
         {
-        num2=Integer.parseInt(Display.getText()); //get second number
-       
+       Calculate(Double.parseDouble(Display.getText())); //get second number
+        // double result=0;
+        // result=(int) result;
 
-        if(operator.equals("+")){ //check  if operation is addition
-          int result=num1+num2; 
-           Display.setText(String.valueOf(result)); //show result
-       }
         
-       if(operator.equals("-")){
-        int result=num1-num2;
-        Display.setText(String.valueOf(result));
+       if(res==(int) res){
+         Display.setText(String.valueOf((int) res));
        }
-
-       if(operator.equals("*")){
-        int result=num1*num2;
-        Display.setText(String.valueOf(result));
-       }
-
-       if(operator.equals("/")){
-        if(num2==0){
-          Display.setText("Error");
-        }
-        else{
-          int result=num1/num2;
-          Display.setText(String.valueOf(result));
-        }
+       else{
+        Display.setText(String.valueOf(res));
+        operator="";
        }
         }
 
         if(e.getSource()==bClear){
           Display.setText("");
-          num1=0;
-          num2=0;
+          res=0;
+         
           operator="";
         }
 
